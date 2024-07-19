@@ -6,30 +6,30 @@ import "../styles/Form.css"
 
 
 function Form({ route, method }) {
-    const [email, setUsername] = useState("")
+    const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [first_name, setFirstName] = useState("")
     const [last_name, setLastName] = useState("")
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
 
-    const name = method === "login"? "Login": "Register"
+    const name = method === "login" ? "Entrar" : "Cadastrar"
+    const isLogin = method === "login";
 
     const handleSubmit = async (e) => {
         setLoading(true)
         e.preventDefault()
 
         try {
-            if (method == "login") {
+            if (isLogin) {
                 const response = await api.post(route, { email, password })
                 localStorage.setItem(ACCESS_TOKEN, response.data.access)
                 localStorage.setItem(REFRESH_TOKEN, response.data.refresh)
                 navigate("/dashboard")
             } else {
-                const response = await api.post(route, { email, password, first_name, last_name})
+                await api.post(route, { email, password, first_name, last_name });
                 navigate("/login")
             }
-
         } catch (error) {
             alert(error)
         } finally {
@@ -37,25 +37,72 @@ function Form({ route, method }) {
         }
     }
 
-    return <form onSubmit={handleSubmit} className="form-container">
-        <h1>{name}</h1>
+    return (
+        <main>
+            <h1>{name}</h1>
+            <form onSubmit={handleSubmit} className="form-container">
+                <div className="fieldWrapper">
+                    <label htmlFor="email">Email</label>
+                    <input
+                        className="form-input"
+                        id="email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Email"
+                        required
+                    />
+                </div>
 
-        <input className="form-input"
-            type="email"
-            value={email}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="Nome"
-        />
+                <div className="fieldWrapper">
+                    <label htmlFor="password">Senha</label>
+                    <input
+                        className="form-input"
+                        id="password"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Senha"
+                        required
+                    />
+                </div>
 
-        <input className="form-input"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Senha"
-        />
+                {!isLogin && (
+                    <>
+                        <div className="fieldWrapper">
+                            <label htmlFor="first_name">Nome</label>
+                            <input
+                                className="form-input"
+                                id="first_name"
+                                type="text"
+                                value={first_name}
+                                onChange={(e) => setFirstName(e.target.value)}
+                                placeholder="Nome"
+                                required
+                            />
+                        </div>
 
-        <button type="submit">{name}</button>
-    </form>
+                        <div className="fieldWrapper">
+                            <label htmlFor="last_name">Sobrenome</label>
+                            <input
+                                className="form-input"
+                                id="last_name"
+                                type="text"
+                                value={last_name}
+                                onChange={(e) => setLastName(e.target.value)}
+                                placeholder="Sobrenome"
+                                required
+                            />
+                        </div>
+                    </>
+                )}
+
+                <button type="submit" disabled={loading}>
+                    {name}
+                </button>
+            </form>
+        </main>
+    );
 }
 
 export default Form

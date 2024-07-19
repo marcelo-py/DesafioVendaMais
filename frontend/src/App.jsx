@@ -5,13 +5,14 @@ import Register from "./pages/Register"
 import NotFound from "./pages/NotFound"
 import DashBoard from "./pages/Dashboard"
 import ProtectedRoute from "./components/ProtectedRoute"
+import "./styles/Global.css"
 
 function Logout() {
   localStorage.clear()
   return <Navigate to="/login" />
 }
 
-// Apenas para que seja obrigado a logar pós registro
+// Para renderizar Cadastro
 function RegisterAndLogout() {
   localStorage.clear()
   return <Register />
