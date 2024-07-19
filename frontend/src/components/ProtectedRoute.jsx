@@ -9,18 +9,23 @@ function ProtectedRoute({ children }) {
     // Verificando se estamos autorizados
     const [isAuthorized, setIsAuthorized] = useState(null)
 
+    useEffect(() => {
+        auth().catch(() => setIsAuthorized(false))
+    }, [])
+
     const refresToken = async () => {
         const refresToken = localStorage.getItem(REFRESH_TOKEN)
-        useEffect(() => {
-            auth().catch(() => setIsAuthorized(false))
-        }, [])
 
         try {
-            const response = await api.post('/api/token/refresh/', { refresh: refresToken })
+            const response = await api.post('/api/token/refresh/', {
+                refresh: refresToken 
+            })
+
             if (response.status >= 200 && response.status < 300) {
                 localStorage.setItem(ACCESS_TOKEN, response.data.access) // Novo token Configurado
                 setIsAuthorized(true)
             } else {
+                console.log('um erro>>>>', error)
                 setIsAuthorized(false)
             }
         } catch (error) {
@@ -31,6 +36,7 @@ function ProtectedRoute({ children }) {
 
     const auth = async () => {
         const token = localStorage.getItem(ACCESS_TOKEN)
+        
         if (!token) {
             setIsAuthorized(false)
             return
@@ -51,7 +57,7 @@ function ProtectedRoute({ children }) {
         return <div>Carregando...</div>
     }
 
-    return isAuthorized ? children : <Navigate to="" />
+    return isAuthorized? children: <Navigate to="/login" />
 }
 
-export default ProtectedRoute;
+export default ProtectedRoute
