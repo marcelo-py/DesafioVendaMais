@@ -26,7 +26,7 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 
-class CustomUser(AbstractBaseUser):
+class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
@@ -44,8 +44,8 @@ class CustomUser(AbstractBaseUser):
 
 
 class Account(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='account')
+    balance = models.DecimalField(max_digits=10, decimal_places=2, default=50.00)
 
     def __str__(self):
         return f"{self.user.email} - Balance: {self.balance}"

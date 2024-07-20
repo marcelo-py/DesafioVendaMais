@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import Account
+from django.utils import timezone
 
 
 class Transaction(models.Model):
@@ -13,7 +14,7 @@ class Transaction(models.Model):
     to_account = models.ForeignKey(Account, related_name='incoming_transactions', on_delete=models.CASCADE, null=True, blank=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     transaction_type = models.CharField(max_length=20, choices=TRANSACTION_TYPE_CHOICES)
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return f"{self.transaction_type} of {self.amount} from {self.from_account} to {self.to_account}"

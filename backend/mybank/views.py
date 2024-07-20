@@ -9,7 +9,7 @@ class TransactionCreateView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
-        serializer = TransactionSerializer(data=request.data)
+        serializer = TransactionSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
 
@@ -31,16 +31,20 @@ class TransactionListView(APIView):
 
 class DashboardView(APIView):
     permission_classes = [permissions.IsAuthenticated]
-
+    
     def get(self, request):
         account = request.user.account
+        
         transactions = Transaction.objects.filter(
             from_account=account) | Transaction.objects.filter(to_account=account)
+
         balance = account.balance
         transaction_serializer = TransactionSerializer(transactions, many=True)
         data = {
+            'user_id': account.id,
             'balance': balance,
             'transactions': transaction_serializer.data,
         }
-        
+        account
         return Response(data)
+    
