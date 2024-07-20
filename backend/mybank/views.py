@@ -34,17 +34,20 @@ class DashboardView(APIView):
     
     def get(self, request):
         account = request.user.account
-        
+        print(f'{request.user.first_name} {request.user.last_name}')
         transactions = Transaction.objects.filter(
             from_account=account) | Transaction.objects.filter(to_account=account)
 
         balance = account.balance
         transaction_serializer = TransactionSerializer(transactions, many=True)
+        
         data = {
-            'user_id': account.id,
+            'username': f'{request.user.first_name} {request.user.last_name}',
+            'account_number': account.account_number,
+            'user_id': account.account_number,
             'balance': balance,
             'transactions': transaction_serializer.data,
         }
-        account
+        
         return Response(data)
     

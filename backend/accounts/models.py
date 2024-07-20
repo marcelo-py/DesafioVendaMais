@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils import timezone
+import random
+
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -44,8 +46,21 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 
 class Account(models.Model):
+    account_number = models.CharField(max_length=10, unique=True, blank=True, primary_key=True)
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='account')
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=50.00)
 
     def __str__(self):
         return f"{self.user.email} - Balance: {self.balance}"
+
+    def save(self, *args, **kwargs):
+        if not self.account_number:
+            self.account_number = self.generate_account_number()
+        super().save(*args, **kwargs)
+
+    def generate_account_number(self):
+        while True:
+            account_number = ''.join([str(random.randint(0, 9)) for _ in range(10)])
+            if not Account.objects.filter(account_number=account_number).exists():
+                return account_number
+    

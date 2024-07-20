@@ -3,8 +3,9 @@ import api from "../api"
 import TransactionList from "../components/Transaction"
 
 function DashBoard() {
-    let userName
-    const [transactions, setTransactions] = useState([]);
+    const [userName, setUserName] = useState('')
+    const [accountNumber, setAccountNumber] = useState('')
+    const [transactions, setTransactions] = useState([])
     const [amount, setAmount] = useState("")
     const [transactionType, setTransactionType] = useState("")
     const [toAccount, setToAccount] = useState("")
@@ -19,8 +20,8 @@ function DashBoard() {
         api.get('/api/mybank/dashboard/')
             .then((response) => {
                 setUserID(response.data.user_id);
-                console.log(response.data)
-                userName = `${response.data}`
+                setUserName(response.data.username)
+                setAccountNumber(response.data.account_number)
             })
             .catch((error) => alert(error));
     }
@@ -58,6 +59,11 @@ function DashBoard() {
         <main>
             <h1>Dashboard</h1>
 
+            <section>
+                <h2>Informações</h2>
+                <h3>{userName}</h3>
+                <h4>{accountNumber}</h4>
+            </section>
             <section>
                 <h2>Fazer uma transação</h2>
                 <form onSubmit={createTransaction}>
