@@ -13,6 +13,8 @@ function DashBoard() {
     const [transactionType, setTransactionType] = useState("")
     const [toAccount, setToAccount] = useState("")
     const [userID, setUserID] = useState(null)
+    const [totalAmoutThirty, setTotalAmoutThirty] = useState('0, 00')
+    const [balance, setBalance] = useState('0, 00')
 
     useEffect(() => {
         fetchDashboardData()
@@ -25,6 +27,8 @@ function DashBoard() {
                 setUserID(response.data.user_id)
                 setUserName(response.data.username)
                 setAccountNumber(response.data.account_number)
+                setBalance(response.data.balance)
+                setTotalAmoutThirty(response.data.total_amount_last_30_days)
             })
             .catch((error) => alert(error))
     }
@@ -50,7 +54,7 @@ function DashBoard() {
             .then((response) => {
                 if (response.status === 201 && response.status <= 300) {
                     alert("Transação feita com sucesso!")
-                    fetchTransactions() // Atualize a lista de transações
+                    fetchTransactions()
                 } else {
                     alert("Falha na transação.")
                 }
@@ -63,7 +67,6 @@ function DashBoard() {
             <header className="headerGlobal">
                 <h1>Dashboard</h1>
             </header>
-            
 
             <section className="capeInfo">
                 <div className="info">
@@ -79,7 +82,7 @@ function DashBoard() {
                         <p className="account-number">{accountNumber}</p>
                     </div>
                     
-                    <p className="balance">R$56, 50</p>
+                    <p className="balance">R${balance}, 00</p>
                 </div>
             </section>
 
@@ -90,15 +93,15 @@ function DashBoard() {
                         <TransactionTypeChart />
 
                         <div className="recent-balance">
-                            <h4>R$580, 50</h4>
-                            <p>Entrados na sua conta nos últimos 30 dias </p>
+                            <h4>R${totalAmoutThirty}, 00</h4>
+                            <p>Movimentados na sua conta nos últimos 30 dias </p>
                         </div>
                     </section>
 
                     <section className="make-transaction-section">
                         <h3>Fazer uma transação</h3>
                         <form onSubmit={createTransaction}>
-                            <div>
+                            <div className="field-wrapper">
                                 <label htmlFor="transaction_type">Tipo de Transação</label>
                                 <select
                                     id="transaction_type"
@@ -113,33 +116,33 @@ function DashBoard() {
                                     <option value="transfer">Transferencia</option>
                                 </select>
                             </div>
+                            <div className="number-account-amount">
+                                <div className="field-wrapper">
+                                    <label htmlFor="to_account">Numero da conta</label>
+                                    <input
+                                        type="text"
+                                        id="to_account"
+                                        name="to_account"
+                                        placeholder="número da conta"
+                                        required
+                                        onChange={(e) => setToAccount(e.target.value)}
+                                        value={toAccount}
+                                    />
+                                </div>
 
-                            <div>
-                                <label htmlFor="to_account">Fazer transferencia para</label>
-                                <input
-                                    type="text"
-                                    id="to_account"
-                                    name="to_account"
-                                    placeholder="número da conta"
-                                    required
-                                    onChange={(e) => setToAccount(e.target.value)}
-                                    value={toAccount}
-                                />
+                                <div className="field-wrapper">
+                                    <label htmlFor="amount">Valor</label>
+                                    <input
+                                        type="number"
+                                        id="amount"
+                                        name="amount"
+                                        placeholder="valor"
+                                        required
+                                        onChange={(e) => setAmount(e.target.value)}
+                                        value={amount}
+                                    />
+                                </div>
                             </div>
-
-                            <div>
-                                <label htmlFor="amount">Valor</label>
-                                <input
-                                    type="number"
-                                    id="amount"
-                                    name="amount"
-                                    placeholder="valor"
-                                    required
-                                    onChange={(e) => setAmount(e.target.value)}
-                                    value={amount}
-                                />
-                            </div>
-
                             <button type="submit">Enviar</button>
                         </form>
                     </section>
@@ -158,7 +161,7 @@ function DashBoard() {
                         </form> 
                     </header>
                     
-                    <TransactionList transactions={transactions} />
+                    <TransactionList transactions={transactions} accountNumberMyUser={accountNumber} />
                 </aside>
             </div>
         </main>

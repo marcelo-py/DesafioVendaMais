@@ -18,4 +18,7 @@ class Transaction(models.Model):
 
     def __str__(self):
         return f"{self.transaction_type} of {self.amount} from {self.from_account} to {self.to_account}"
-        
+    
+    @staticmethod
+    def get_transaction_type_display(transaction_type):
+        return dict(Transaction.TRANSACTION_TYPE_CHOICES).get(transaction_type, transaction_type)

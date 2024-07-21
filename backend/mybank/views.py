@@ -3,7 +3,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Transaction
 from .serializers import TransactionSerializer
-from django.db.models import Count
+from django.db.models import Count, Q, Sum
+from datetime import timedelta
+from django.utils import timezone
 
 
 class TransactionCreateView(APIView):
@@ -26,7 +28,6 @@ class TransactionListView(APIView):
         user = request.user
         transaction_type = request.query_params.get('transaction_type', None)
 
-        # Filtro básico para transações do usuário
         transactions = Transaction.objects.filter(from_account__user=user) | Transaction.objects.filter(to_account__user=user)
 
         # Filtro para tipo de transação se o parâmetro estiver presente
@@ -47,9 +48,21 @@ class DashboardView(APIView):
     
     def get(self, request):
         account = request.user.account
+        thirty_days_ago = timezone.now() - timedelta(days=30)
+
         print(f'{request.user.first_name} {request.user.last_name}')
         transactions = Transaction.objects.filter(
             from_account=account) | Transaction.objects.filter(to_account=account)
+        
+        # Filtra transações dos últimos 30 dias
+        transactions_thirty_days = Transaction.objects.filter(
+            (Q(from_account__user=request.user) | Q(to_account__user=request.user)) & 
+            Q(timestamp__gte=thirty_days_ago)
+        )
+        
+        # Calcula a soma do valor das transações dos últimos 30 dias
+        total_amount_last_30_days = transactions.aggregate(Sum('amount'))['amount__sum']
+        
 
         balance = account.balance
         transaction_serializer = TransactionSerializer(transactions, many=True)
@@ -60,6 +73,7 @@ class DashboardView(APIView):
             'user_id': account.account_number,
             'balance': balance,
             'transactions': transaction_serializer.data,
+            'total_amount_last_30_days': total_amount_last_30_days
         }
         
         return Response(data)
@@ -74,12 +88,18 @@ class TransactionTypeStatsView(APIView):
         ) | Transaction.objects.filter(
             to_account__user=request.user
         )
-        
+
+        translate = {
+            'deposit': 'Depósito',
+            'withdrawal': 'Saque',
+            'transfer': 'Transferência',
+        }
+
         # Calcula a quantidade de transações por tipo mapeando com Count
         transaction_counts = filter_query.values('transaction_type').annotate(count=Count('id'))
         # Prepara os dados para o frontend
         data = {
-            'labels': [item['transaction_type'] for item in transaction_counts],
+            'labels': [translate[item['transaction_type']] for item in transaction_counts],
             'counts': [item['count'] for item in transaction_counts],
         }
         

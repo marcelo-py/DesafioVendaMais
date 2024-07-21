@@ -9,11 +9,10 @@ const TransactionTypeChart = () => {
     const [chartData, setChartData] = useState({ labels: [], counts: [] })
 
     useEffect(() => {
-        // Buscar dados do backend
         api.get('/api/mybank/transaction-stats/')
             .then(response => {
-                console.log('API response:', response.data); // Verifique a resposta da API
-                const { labels, counts } = response.data;
+                console.log('API response:', response.data)
+                const { labels, counts } = response.data
                 setChartData({ labels, counts })
             })
             .catch(error => console.error(error))
@@ -23,10 +22,10 @@ const TransactionTypeChart = () => {
         labels: chartData.labels,
         datasets: [
             {
-                label: 'Number of Transactions',
+                label: 'Número de Transações',
                 data: chartData.counts,
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: '#4477AA',
+                borderColor: 'rgba(0, 0, 0, 0.2)',
                 borderWidth: 1,
 
                 barThickness: 30, // Define a largura das barras
@@ -76,7 +75,7 @@ const TransactionTypeChart = () => {
 
     return (
         <div className='graphic-area'>
-            <h2>Transaction Types</h2>
+            <h2>Grafico de transações</h2>
             <div className='graphic-wrapper'> {/* Defina o tamanho do gráfico */}
                 <Bar data={data} options={options} />
             </div>

@@ -1,6 +1,6 @@
 import React from "react"
 
-function TransactionList({ transactions }) {
+function TransactionList({ transactions, accountNumberMyUser }) {
     const transactionTypeTranslations = {
         deposit: 'Depósito',
         withdrawal: 'Saque',
@@ -15,7 +15,7 @@ function TransactionList({ transactions }) {
                         <li key={transaction.id}>
                             
                             <div className="top-info">
-                                <h4>R${transaction.amount}</h4>
+                                <h4>{transaction.to_account == accountNumberMyUser && transaction.transaction_type !== 'withdrawal'? '+': '-'} R${transaction.amount}</h4>
                                 <p>({transactionTypeTranslations[transaction.transaction_type]})</p>
                             </div>
 
