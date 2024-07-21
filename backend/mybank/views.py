@@ -61,7 +61,7 @@ class DashboardView(APIView):
         )
         
         # Calcula a soma do valor das transações dos últimos 30 dias
-        total_amount_last_30_days = transactions.aggregate(Sum('amount'))['amount__sum']
+        total_amount_last_30_days = transactions_thirty_days.aggregate(Sum('amount'))['amount__sum']
         
 
         balance = account.balance

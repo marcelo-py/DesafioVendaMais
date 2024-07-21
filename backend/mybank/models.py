@@ -15,6 +15,7 @@ class Transaction(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     transaction_type = models.CharField(max_length=20, choices=TRANSACTION_TYPE_CHOICES)
     timestamp = models.DateTimeField(default=timezone.now)
+    gift = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.transaction_type} of {self.amount} from {self.from_account} to {self.to_account}"

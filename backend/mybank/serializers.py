@@ -6,7 +6,7 @@ from accounts.models import Account
 class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
-        fields = ('id', 'from_account', 'to_account', 'amount', 'transaction_type', 'timestamp')
+        fields = ('id', 'from_account', 'to_account', 'amount', 'gift', 'transaction_type', 'timestamp')
     
     def create(self, validated_data):
         user = self.context['request'].user
