@@ -1,0 +1,157 @@
+h1,
+h2,
+h3,
+h4,
+h5 {
+    color: #313131;
+}
+
+p,
+li {
+    color: #333333;
+}
+
+li {
+    list-style: none;
+}
+
+.capeInfo {
+    width: 1280px;
+    max-width: 100%;
+    background-color: #55FF68;
+    margin: 0 auto;
+    padding: 100px 20px;
+}
+
+.headerGlobal {
+    width: 1280px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.capeInfo .info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.capeInfo .info .username {
+    font-weight: 100;
+}
+
+.capeInfo .info .account-number {
+    margin-bottom: 10px;
+    font-weight: 300;
+}
+
+.account-number-wrapper {
+    display: flex;
+    gap: 10px;
+}
+
+.capeInfo .info .account-number-wrapper svg {
+    display: block;
+}
+
+.capeInfo .info .balance {
+    font-size: 40px;
+}
+
+
+/*Sides*/
+.wrapperSide {
+    width: 1280px;
+    max-width: 100%;
+    margin: 30px auto;
+    display: flex;
+    justify-content: space-between;
+    background-color: #57575718;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/*Grafico*/
+article {
+    max-width: 100%;
+}
+
+.transaction-report-container-section {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 30px;
+    background-color: aquamarine;
+}
+
+.transaction-report-container-section .graphic-area {
+    width: 630px;
+    max-width: 100%;
+}
+
+.transaction-report-container-section .graphic-area .graphic-wrapper {
+    width: 630px;
+    max-width: 100%;
+}
+
+.transaction-report-container-section .recent-balance {
+    width: 414px;
+    max-width: 100%;
+    text-align: center;
+}
+
+.transaction-report-container-section .recent-balance h4 {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.transaction-report-container-section.recent-balance p {
+    font-size: 20px;
+}
+
+
+
+/*Listar transações*/
+.transaction-container header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.transaction-container header form select{
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 5px;
+}
+
+.transaction-container ul{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 650px;
+    overflow-y: auto;
+    padding-top: 10px;
+}
+
+.transaction-container ul li{
+    padding: 15px;
+    background-color: #33333318;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.transaction-container ul li .top-info {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+
+
+
+/*Fazer Transação*/
+.make-transaction-section {
+    margin: 30px 0;
+}

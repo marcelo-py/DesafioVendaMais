@@ -1,14 +1,14 @@
-main {
+.main {
     padding: 0 10px;
 }
 
-main h1 {
+.main h1 {
     text-align: center;
     margin-bottom: 10px;
     margin-top: 20px;
 }
 
-main .form-container {
+.main .form-container {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -17,19 +17,19 @@ main .form-container {
     margin: 0 auto;
 }
 
-main .form-container .fieldWrapper {
+.main .form-container .fieldWrapper {
     display: flex;
     flex-direction: column;
     gap: 4px;
 }
 
-main .form-container .fieldWrapper .form-input{
+.main .form-container .fieldWrapper input{
     padding: 8px;
     border-radius: 5px;
     border: 1px solid #555555;
 }
 
-main .form-container button{
+.main .form-container button{
     padding: 8px;
     border-radius: 5px;
     border: 1px solid #686868;
@@ -39,6 +39,6 @@ main .form-container button{
     font-weight: bold;
 }
 
-main .form-container button:hover{
+.main .form-container button:hover{
     outline: 1px solid #555555;
 }

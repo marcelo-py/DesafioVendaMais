@@ -18,3 +18,4 @@ class Transaction(models.Model):
 
     def __str__(self):
         return f"{self.transaction_type} of {self.amount} from {self.from_account} to {self.to_account}"
+        

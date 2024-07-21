@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Transaction
 from .serializers import TransactionSerializer
+from django.db.models import Count
 
 
 class TransactionCreateView(APIView):
@@ -23,9 +24,21 @@ class TransactionListView(APIView):
 
     def get(self, request):
         user = request.user
-        transactions = Transaction.objects.filter(from_account__user=user) | Transaction.objects.filter(to_account__user=user)
-        serializer = TransactionSerializer(transactions, many=True)
+        transaction_type = request.query_params.get('transaction_type', None)
 
+        # Filtro básico para transações do usuário
+        transactions = Transaction.objects.filter(from_account__user=user) | Transaction.objects.filter(to_account__user=user)
+
+        # Filtro para tipo de transação se o parâmetro estiver presente
+        if transaction_type:
+            print('Caiu aqui>>>>>>>', transaction_type)
+            transactions = transactions.filter(
+                transaction_type=transaction_type,
+                from_account__user=user) | Transaction.objects.filter(
+                transaction_type=transaction_type,
+                to_account__user=user)
+
+        serializer = TransactionSerializer(transactions, many=True)
         return Response(serializer.data)
 
 
@@ -49,5 +62,27 @@ class DashboardView(APIView):
             'transactions': transaction_serializer.data,
         }
         
+        return Response(data)
+    
+
+class TransactionTypeStatsView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        filter_query =  Transaction.objects.filter(
+            from_account__user=request.user
+        ) | Transaction.objects.filter(
+            to_account__user=request.user
+        )
+        
+        # Calcula a quantidade de transações por tipo mapeando com Count
+        transaction_counts = filter_query.values('transaction_type').annotate(count=Count('id'))
+        # Prepara os dados para o frontend
+        data = {
+            'labels': [item['transaction_type'] for item in transaction_counts],
+            'counts': [item['count'] for item in transaction_counts],
+        }
+        
+        print(data)
         return Response(data)
     

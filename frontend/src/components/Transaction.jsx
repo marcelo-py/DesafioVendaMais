@@ -1,26 +1,39 @@
-import React from "react";
+import React from "react"
 
 function TransactionList({ transactions }) {
+    const transactionTypeTranslations = {
+        deposit: 'Depósito',
+        withdrawal: 'Saque',
+        transfer: 'Transferência',
+    };
+    
     return (
-        <div>
+        <>
             {transactions.length > 0 ? (
                 <ul>
                     {transactions.map((transaction) => (
                         <li key={transaction.id}>
-                            <p>Tipo: {transaction.transaction_type}</p>
-                            <p>Valor: {transaction.amount}</p>
-                            <p>De: {transaction.from_account}</p>
-                            <p>Para: {transaction.to_account}</p>
+                            
+                            <div className="top-info">
+                                <h4>R${transaction.amount}</h4>
+                                <p>({transactionTypeTranslations[transaction.transaction_type]})</p>
+                            </div>
+
+                            {transaction.transaction_type !== 'deposit' && (
+                                <>
+                                    <p>Nome Usuario - {transaction.from_account}</p>
+                                </>
+                            )}
+
                             <p>Data: {transaction.timestamp}</p>
-                        </li>
+                        </li> 
                     ))}
                 </ul>
             ) : (
                 <p>Nenhuma transação encontrada</p>
             )}
-        </div>
-    );
+        </>
+    )
 }
 
-export default TransactionList;
-
+export default TransactionList

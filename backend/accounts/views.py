@@ -25,3 +25,4 @@ class AccountDetailView(APIView):
         serializer = AccountSerializer(account)
 
         return Response(serializer.data)
+    

@@ -2,7 +2,7 @@ import { useState } from "react"
 import api from "../api"
 import { useNavigate } from "react-router-dom"
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants"
-import "../styles/Form.css"
+import styles from "../styles/Form.module.css"
 
 
 function Form({ route, method }) {
@@ -38,10 +38,10 @@ function Form({ route, method }) {
     }
 
     return (
-        <main>
+        <main className={styles.main}>
             <h1>{name}</h1>
-            <form onSubmit={handleSubmit} className="form-container">
-                <div className="fieldWrapper">
+            <form onSubmit={handleSubmit} className={styles['form-container']}>
+                <div className={styles.fieldWrapper}>
                     <label htmlFor="email">Email</label>
                     <input
                         className="form-input"
@@ -54,7 +54,7 @@ function Form({ route, method }) {
                     />
                 </div>
 
-                <div className="fieldWrapper">
+                <div className={styles.fieldWrapper}>
                     <label htmlFor="password">Senha</label>
                     <input
                         className="form-input"
@@ -69,7 +69,7 @@ function Form({ route, method }) {
 
                 {!isLogin && (
                     <>
-                        <div className="fieldWrapper">
+                        <div className={styles.fieldWrapper}>
                             <label htmlFor="first_name">Nome</label>
                             <input
                                 className="form-input"
@@ -82,7 +82,7 @@ function Form({ route, method }) {
                             />
                         </div>
 
-                        <div className="fieldWrapper">
+                        <div className={styles.fieldWrapper}>
                             <label htmlFor="last_name">Sobrenome</label>
                             <input
                                 className="form-input"
