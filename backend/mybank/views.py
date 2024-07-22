@@ -31,7 +31,7 @@ class TransactionListView(APIView):
         transactions = Transaction.objects.filter(from_account__user=user) | Transaction.objects.filter(to_account__user=user)
 
         # Filtro para tipo de transação se o parâmetro estiver presente
-        if transaction_type:
+        if transaction_type and transaction_type in ('deposit', 'transfer', 'withdrawal'):
             print('Caiu aqui>>>>>>>', transaction_type)
             transactions = transactions.filter(
                 transaction_type=transaction_type,
@@ -70,7 +70,6 @@ class DashboardView(APIView):
         data = {
             'username': f'{request.user.first_name} {request.user.last_name}',
             'account_number': account.account_number,
-            'user_id': account.account_number,
             'balance': balance,
             'transactions': transaction_serializer.data,
             'total_amount_last_30_days': total_amount_last_30_days

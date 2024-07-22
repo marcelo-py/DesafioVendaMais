@@ -1,6 +1,14 @@
 from django.db import models
 from accounts.models import Account
 from django.utils import timezone
+from django.db import models, transaction
+from rest_framework.exceptions import APIException
+
+
+class InsufficientBalanceException(APIException):
+    status_code = 400
+    default_detail = 'Saldo insuficiente para a transferência.'
+    default_code = 'insufficient_balance'
 
 
 class Transaction(models.Model):
@@ -20,6 +28,20 @@ class Transaction(models.Model):
     def __str__(self):
         return f"{self.transaction_type} of {self.amount} from {self.from_account} to {self.to_account}"
     
-    @staticmethod
-    def get_transaction_type_display(transaction_type):
-        return dict(Transaction.TRANSACTION_TYPE_CHOICES).get(transaction_type, transaction_type)
+    def save(self, *args, **kwargs):
+        if self.transaction_type == 'transfer' and self.from_account and self.to_account:
+            if self.from_account.balance < self.amount:
+                raise InsufficientBalanceException()
+
+            if self.from_account != self.to_account:
+                with transaction.atomic():
+                    # Subtrai o saldo da conta de origem
+                    print('1 Valor atual da conta>>>>', self.from_account.balance)
+                    self.from_account.balance -= self.amount
+                    self.from_account.save()
+                    
+                    # Adiciona o saldo na conta de destino
+                    self.to_account.balance += self.amount
+                    self.to_account.save()
+
+        super().save(*args, **kwargs)

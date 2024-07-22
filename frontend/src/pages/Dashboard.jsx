@@ -15,6 +15,7 @@ function DashBoard() {
     const [userID, setUserID] = useState(null)
     const [totalAmoutThirty, setTotalAmoutThirty] = useState('0, 00')
     const [balance, setBalance] = useState('0, 00')
+    const [filterType, setFilterType] = useState('');
 
     useEffect(() => {
         fetchDashboardData()
@@ -33,8 +34,10 @@ function DashBoard() {
             .catch((error) => alert(error))
     }
 
-    const fetchTransactions = () => {
-        api.get("/api/mybank/transactions/")
+    const fetchTransactions = (type = '') => {
+        api.get("/api/mybank/transactions/", {
+            params: { transaction_type: type }
+        })
             .then((response) => {
                 setTransactions(response.data)
                 console.log(response.data)
@@ -60,6 +63,18 @@ function DashBoard() {
                 }
             })
             .catch((error) => alert(error))
+    }
+
+
+    const handleFilterChange = (e) => {
+        const type = e.target.value;
+        setFilterType(type);
+        fetchTransactions(type);
+    }
+
+    const clearFilter = () => {
+        setFilterType('');
+        fetchTransactions();
     }
 
     return (
@@ -151,13 +166,14 @@ function DashBoard() {
                 <aside className="transaction-container">
                     <header>
                         <h3>Extrato</h3>
-                        <form action="" method="GET">
-                            <select id="transaction_type" name="transaction_type">
+                        <form>
+                            <select id="transaction_type" name="transaction_type" onChange={handleFilterChange}>
                                 <option value="">Filtrar por</option>
                                 <option value="deposit">Deposito</option>
                                 <option value="withdrawal">Saque</option>
                                 <option value="transfer">Transferencia</option>
                             </select>
+                            <button type="reset" onClick={clearFilter}>Limpar Filtro</button>
                         </form> 
                     </header>
                     

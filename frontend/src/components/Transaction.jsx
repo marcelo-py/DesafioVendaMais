@@ -7,14 +7,14 @@ function TransactionList({ transactions, accountNumberMyUser }) {
         withdrawal: 'Saque',
         transfer: 'Transferência',
     }
-    
+
     return (
         <>
             {transactions.length > 0 ? (
                 <ul>
                     {transactions.map((transaction) => (
                         <li key={transaction.id}>
-                            
+
                             <div className="top-info">
                                 <h4>
                                     {
@@ -22,7 +22,9 @@ function TransactionList({ transactions, accountNumberMyUser }) {
                                             <img src={redeem} alt="Redeem" title="Prsente nosso por entrar" />
                                         )
                                     }
-                                    {transaction.to_account == accountNumberMyUser && transaction.transaction_type !== 'withdrawal'? '+': '-'} R${transaction.amount}
+                                    {
+                                        transaction.to_account == accountNumberMyUser && transaction.transaction_type !== 'withdrawal' ? '+' : '-'} R${transaction.amount
+                                    }
                                 </h4>
                                 <p>({transactionTypeTranslations[transaction.transaction_type]})</p>
                             </div>
@@ -33,8 +35,8 @@ function TransactionList({ transactions, accountNumberMyUser }) {
                                 </>
                             )}
 
-                            <p>Data: {transaction.timestamp}</p>
-                        </li> 
+                            <p>Data: {new Date(transaction.timestamp).toLocaleString()}</p>
+                        </li>
                     ))}
                 </ul>
             ) : (
