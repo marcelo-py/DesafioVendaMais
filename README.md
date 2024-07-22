@@ -57,6 +57,7 @@ crie um arquivo ```.env``` na raiz de DesafioVendaMais/backend/ e coloque as var
 3. Rode as migrações do Django
 para trabalhor melhor no django sugiro que mude pra a pasta /backend/
     ```bash
+    # Migrações
     python manage.py makemigrations accounts
     python manage.py makemigrations mybank
     python manage.py migrate
