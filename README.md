@@ -33,6 +33,14 @@ Certifique-se de ter instalado:
 ### Backend (Django)
 
 1. Clone o repositório:
-   ```bash
-   https://github.com/marcelo-py/DesafioVendaMais
-   cd /backend
+    ```bash
+    https://github.com/marcelo-py/DesafioVendaMais
+    cd /backend
+
+2. Configure o DJango:
+    ```bash
+    python3 -m venv .venv
+
+    (Comandos para Sitemas diferentes)
+    (Linux) -> source ./.venv/bin/activate
+    (Windows) -> .\venv\Scripts\Activate
