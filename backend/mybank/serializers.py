@@ -50,5 +50,5 @@ class TransactionSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
         account = Account.objects.get(user=user)
         validated_data['from_account'] = account
-
+        
         return super().create(validated_data)
