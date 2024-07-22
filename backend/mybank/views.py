@@ -44,8 +44,9 @@ class TransactionListView(APIView):
                 from_account__user=user) | Transaction.objects.filter(
                 transaction_type=transaction_type,
                 to_account__user=user)
-
+            
         serializer = TransactionSerializer(transactions, many=True)
+
         return Response(serializer.data)
 
 

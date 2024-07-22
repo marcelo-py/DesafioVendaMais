@@ -125,11 +125,9 @@ function DashBoard() {
                         </svg>
                         <p className="account-number">{accountNumber}</p>
                     </div>
-                    
                     <p className="balance">R${balance}, 00</p>
                 </div>
             </section>
-
 
             <div className="wrapperSide">
                 <article>
@@ -212,7 +210,7 @@ function DashBoard() {
                 </aside>
             </div>
         </main>
-    );
+    )
 }
 
 export default DashBoard;
