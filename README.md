@@ -64,3 +64,7 @@ para trabalhor melhor no django sugiro que mude pra a pasta /backend/
 
     # Rode o django
     python manage.py runserver
+
+### Frontend (React)
+1.  Instale as Dependencias
+Para instalar as deendencias do React basta nevegar até /frontend/ e da o comando ```npm install```
