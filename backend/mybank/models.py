@@ -29,6 +29,10 @@ class Transaction(models.Model):
         return f"{self.transaction_type} of {self.amount} from {self.from_account} to {self.to_account}"
     
     def save(self, *args, **kwargs):
+        if self.transaction_type == 'withdrawal' and self.from_account:
+            if self.from_account.balance < self.amount:
+                raise InsufficientBalanceException()
+
         if self.transaction_type == 'transfer' and self.from_account and self.to_account:
             if self.from_account.balance < self.amount:
                 raise InsufficientBalanceException()
@@ -43,5 +47,13 @@ class Transaction(models.Model):
                     # Adiciona o saldo na conta de destino
                     self.to_account.balance += self.amount
                     self.to_account.save()
+
+        elif self.transaction_type == 'deposit' and self.to_account:
+            self.to_account.balance += self.amount
+            self.to_account.save()
+
+        elif self.transaction_type == 'withdrawal' and self.from_account:
+            self.from_account.balance -= self.amount
+            self.from_account.save()
 
         super().save(*args, **kwargs)

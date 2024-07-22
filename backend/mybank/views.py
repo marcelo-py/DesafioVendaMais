@@ -10,13 +10,19 @@ from django.utils import timezone
 
 class TransactionCreateView(APIView):
     permission_classes = [permissions.IsAuthenticated]
-
+    
     def post(self, request):
+        user = request.user
         serializer = TransactionSerializer(data=request.data, context={'request': request})
+        
         if serializer.is_valid():
             serializer.save()
 
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            request_account_balance = user.account.balance
+            response_data = serializer.data
+            response_data['new_balance'] = request_account_balance
+
+            return Response(response_data, status=status.HTTP_201_CREATED)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

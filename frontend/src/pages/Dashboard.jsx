@@ -15,12 +15,20 @@ function DashBoard() {
     const [userID, setUserID] = useState(null)
     const [totalAmoutThirty, setTotalAmoutThirty] = useState('0, 00')
     const [balance, setBalance] = useState('0, 00')
-    const [filterType, setFilterType] = useState('');
+    const [filterType, setFilterType] = useState('')
+    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [isFormValid, setIsFormValid] = useState(false)
 
     useEffect(() => {
         fetchDashboardData()
         fetchTransactions()
     }, [])
+
+    useEffect(() => {
+        checkFormValidity()
+    }, [amount, transactionType, toAccount])
+
+
 
     const fetchDashboardData = () => {
         api.get('/api/mybank/dashboard/')
@@ -45,36 +53,57 @@ function DashBoard() {
             .catch((error) => alert(error))
     }
 
-    const createTransaction = (e) => {
+    const createTransaction = async (e) => {
         e.preventDefault()
+        setIsSubmitting(true)
 
-        api.post("/api/mybank/transactions/create/", {
-            amount: amount,
-            transaction_type: transactionType,
-            from_account: userID,
-            to_account: toAccount,
-        })
-            .then((response) => {
-                if (response.status === 201 && response.status <= 300) {
-                    alert("Transação feita com sucesso!")
-                    fetchTransactions()
-                } else {
-                    alert("Falha na transação.")
-                }
+        try {
+            const response = await api.post("/api/mybank/transactions/create/", {
+                amount: amount,
+                transaction_type: transactionType,
+                from_account: accountNumber,
+                to_account: toAccount,
             })
-            .catch((error) => alert(error))
+
+            if (response.status === 201 && response.status <= 300) {
+                alert("Transação feita com sucesso!")
+                fetchTransactions()
+                clearFormFields()
+                setBalance(response.data.new_balance)
+            } else {
+                alert("Falha na transação.")
+            }
+        } catch (error) {
+            alert(error)
+        } finally {
+            setIsSubmitting(false)
+        }
     }
 
 
+    const clearFormFields = () => {
+        setAmount("")
+        setTransactionType("")
+        setToAccount("")
+    }
+
+    const checkFormValidity = () => {
+        if (amount && transactionType && toAccount) {
+            setIsFormValid(true)
+        } else {
+            setIsFormValid(false)
+        }
+    }
+
     const handleFilterChange = (e) => {
-        const type = e.target.value;
-        setFilterType(type);
-        fetchTransactions(type);
+        const type = e.target.value
+        setFilterType(type)
+        fetchTransactions(type)
     }
 
     const clearFilter = () => {
-        setFilterType('');
-        fetchTransactions();
+        setFilterType('')
+        fetchTransactions()
     }
 
     return (
@@ -158,7 +187,9 @@ function DashBoard() {
                                     />
                                 </div>
                             </div>
-                            <button type="submit">Enviar</button>
+                            <button type="submit" disabled={!isFormValid || isSubmitting}>
+                                {isSubmitting ? "Enviando..." : "Enviar"}
+                            </button>
                         </form>
                     </section>
                 </article>
