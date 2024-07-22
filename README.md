@@ -32,6 +32,9 @@ Certifique-se de ter instalado:
 
 ### Backend (Django)
 
+#### Detalhe
+crie um arquivo ```.env``` na raiz de DesafioVendaMais/backend/ e coloque as variaveis do arquivo ```.env.exemplo``` e seus valores
+
 1. Clone o repositório:
     ```bash
     https://github.com/marcelo-py/DesafioVendaMais
@@ -41,6 +44,22 @@ Certifique-se de ter instalado:
     ```bash
     python3 -m venv .venv
 
-    (Comandos para Sitemas diferentes)
-    (Linux) -> source ./.venv/bin/activate
-    (Windows) -> .\venv\Scripts\Activate
+    # Comandos para Sitemas diferentes para ativar o Ambiente virtual
+
+    # Linux
+    source ./.venv/bin/activate
+    # Windows
+    .\venv\Scripts\Activate
+
+    # Para instalar as dependencias
+    pip install -r requirements.txt
+
+3. Rode as migrações do Django
+para trabalhor melhor no django sugiro que mude pra a pasta /backend/
+    ```bash
+    python manage.py makemigrations accounts
+    python manage.py makemigrations mybank
+    python manage.py migrate
+
+    # Rode o django
+    python manage.py runserver
