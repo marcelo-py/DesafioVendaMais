@@ -56,7 +56,8 @@ class Account(models.Model):
     def save(self, *args, **kwargs):
         if not self.account_number:
             self.account_number = self.generate_account_number()
-        super().save(*args, **kwargs)
+            
+            super().save(*args, **kwargs)
 
     def generate_account_number(self):
         while True:
