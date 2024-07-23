@@ -49,7 +49,7 @@ crie um arquivo ```.env``` na raiz de DesafioVendaMais/backend/ e coloque as var
     # Linux
     source ./.venv/bin/activate
     # Windows
-    .\venv\Scripts\Activate
+    .\.venv\Scripts\Activate
 
     # Para instalar as dependencias
     pip install -r requirements.txt
