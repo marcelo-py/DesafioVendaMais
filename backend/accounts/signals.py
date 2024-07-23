@@ -7,7 +7,7 @@ from mybank.models import Transaction
 @receiver(post_save, sender=CustomUser)
 def create_user_account(sender, instance, created, **kwargs):
     if created:
-        instance_create = Account.objects.create(user=instance)
+        instance_create = Account.objects.create(user=instance, balance=50)
         Transaction.objects.create(
             to_account=instance_create,
             transaction_type='deposit',
