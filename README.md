@@ -72,7 +72,8 @@ E Rode ```npm run dev```
 
 ## Documetação da API
 Para a documentação utilizamos swagger como mostra a configuração logo a baixo
-```schema_view = get_schema_view(
+```
+schema_view = get_schema_view(
    openapi.Info(
       title="Snippets API",
       default_version='v1',
