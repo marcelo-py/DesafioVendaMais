@@ -33,7 +33,7 @@ Certifique-se de ter instalado:
 ### Backend (Django)
 
 #### Detalhe
-crie um arquivo ```.env``` na raiz de DesafioVendaMais/backend/ e coloque as variaveis do arquivo ```.env.exemplo``` e seus valores
+crie um arquivo ```.env``` na raiz de DesafioVendaMais e coloque as variaveis do arquivo ```.env.exemplo``` em ```DesafioVendaMais/backend/``` e seus valores
 
 1. Clone o repositório:
     ```bash
