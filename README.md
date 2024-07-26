@@ -70,6 +70,11 @@ para trabalhor melhor no django sugiro que mude pra a pasta /backend/
 Para instalar as deendencias do React basta nevegar até /frontend/ e da o comando ```npm install```
 E Rode ```npm run dev```
 
+#### Páginas para navegação
+- ```/dashboard/```
+- ```/login/```
+- ```/register/```
+
 ## Documetação da API
 Para a documentação utilizamos swagger como mostra a configuração logo a baixo
 ```
